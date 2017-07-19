@@ -9,25 +9,44 @@
 import UIKit
 import SceneKit
 
+
 public extension SCNAction {
     
     class func rotateAround(center: SCNVector3, radius: CGFloat, animationDuration: Double) -> SCNAction {
         
         var actions = [SCNAction]()
         
-        for i in 0...360 {
-            
+        let startAngle = Int(arc4random_uniform(359))
+        
+        for i in startAngle...(360 + startAngle)  {
+        
             let x = sin(i.cgFloat.rad) * radius - CGFloat(center.x)
             let z = cos(i.cgFloat.rad) * radius + CGFloat(center.z)
             
-            let moveAction = SCNAction.move(to: SCNVector3(x, CGFloat(center.y), z), duration: animationDuration / 360)
+            let position = SCNVector3(x, CGFloat(center.y), z)
+            
+            let moveAction = SCNAction.move(to: position, duration: animationDuration / 360)
             
             actions.append(moveAction)
         }
         
-        return SCNAction.sequence(actions)
+        return SCNAction.repeatForever(SCNAction.sequence(actions))
        
     }
+    
+//    class func rotateRandomAngle(center: SCNVector3, radius: CGFloat) -> SCNAction{
+//        
+//        let randomAngle = Int(arc4random_uniform(359))
+//        
+//        let randomX = sin(randomAngle.cgFloat.rad) * radius - CGFloat(center.x)
+//        let randomZ = cos(randomAngle.cgFloat.rad) * radius + CGFloat(center.z)
+//        
+//        let position = SCNVector3(randomX, CGFloat(center.y), randomZ)
+//        let moveAction = SCNAction.move(to: position, duration: 0.001)
+//        
+//        return moveAction
+//        
+//    }
     
 }
 
